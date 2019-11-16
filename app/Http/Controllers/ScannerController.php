@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 use App\Product;
+use App\DummyProduct;
 use Carbon\Carbon;
 use Log;
 use GuzzleHttp\Client;
@@ -45,11 +46,15 @@ class ScannerController extends Controller
             $qrcode = $request->qrcode;
             $codes =explode("|",$qrcode);
 
+
             $products = [];
             foreach ($codes as $code){
+                $p = DummyProduct::find('barcode',$code);
+                if(!$p) continue;
                 array_push($products,[
-                    'barcode' => $code,
-                    'name' => 'testProduct',
+                    'barcode' => substr($code,0,11),
+                    'name' => $p->name,
+                    'qte' => substr($code,12,$code.length),
                     'created_at' => Carbon::now(),
                     'user_id' => Auth::user()->id
                 ]);
