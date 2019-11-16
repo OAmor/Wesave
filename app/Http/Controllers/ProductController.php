@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -25,7 +26,7 @@ class ProductController extends Controller
         ];
     }
     public function all(){
-        $products = $user->products;
+        $products = Auth::user()->products;
         return $products;
     }
     public function delete(Request $request, $product_id){
