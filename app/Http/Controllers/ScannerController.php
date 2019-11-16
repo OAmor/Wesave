@@ -46,15 +46,15 @@ class ScannerController extends Controller
             $qrcode = $request->qrcode;
             $codes =explode("|",$qrcode);
 
-
             $products = [];
             foreach ($codes as $code){
-                $p = DummyProduct::find('barcode',$code);
+                $barcode = substr($code,0,12);
+                $p = DummyProduct::where('barcode',$barcode)->first();
                 if(!$p) continue;
                 array_push($products,[
-                    'barcode' => substr($code,0,11),
+                    'barcode' => $barcode,
                     'name' => $p->name,
-                    'qte' => substr($code,12,$code.length),
+                    'qte' => substr($code,12,strlen($code)),
                     'created_at' => Carbon::now(),
                     'user_id' => Auth::user()->id
                 ]);
@@ -67,7 +67,7 @@ class ScannerController extends Controller
         }catch (\Exception $e){
             return response()->json([
                 'success' => false,
-                'message' => 'internalServerError'
+                'message' => $e->getMessage()
             ], 500);
         }
     }
@@ -115,22 +115,13 @@ class ScannerController extends Controller
         }
         $combs = $this->get_array_combination($arr);
         $client = new Client();
-
         $res = [];
-
+        
         foreach ($combs as $comb ){
             $search = implode(",", $comb);
-            $req = "https://api.edamam.com/search?
-                    q=$search
-                    &app_id=b32d3c32
-                    &app_key=8332f2c81bbe470211eb2d6886e90cb3
-                    &from=0
-                    &to=3
-                    &calories=591-722
-                    &health=alcohol-free";
+            $req = "https://api.edamam.com/search?q=$search&app_id=b32d3c32&app_key=8332f2c81bbe470211eb2d6886e90cb3&from=0&to=3&calories=591-722&health=alcohol-free";
             $response = $client->post($req);
-            $r = $response->getBody();
-            array_push($res,$r);
+            array_push($res,json_decode($response->getBody()->getContents(),true));
         }
         return $res;
     }
