@@ -123,6 +123,15 @@ class ScannerController extends Controller
             $response = $client->post($req);
             array_push($res,json_decode($response->getBody()->getContents(),true));
         }
+        return $this->treatData($res);
+    }
+    private function treatData($data){
+        $res = [];
+        foreach ($data as $d){
+            foreach ($d['hits'] as $recipe){
+                array_push($res,$recipe['recipe']);
+            }
+        }
         return $res;
     }
 
