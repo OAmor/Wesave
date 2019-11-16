@@ -13,16 +13,18 @@ class DummyProductSeeder extends Seeder
     public function run()
     {
         $data = [
-          ["name" => "chicken", "barcode" => "123456789123"],
-          ["name" => "potato", "barcode" => "123456789124"],
-          ["name" => "tomato", "barcode" => "123456789125"],
-          ["name" => "onion", "barcode" => "123456789126"],
-          ["name" => "coke", "barcode" => "123456789127"],
-          ["name" => "alcohol", "barcode" => "123456789128"],
-          ["name" => "oil", "barcode" => "123456789129"],
-          ["name" => "beef", "barcode" => "123456789110"],
-          ["name" => "eggs", "barcode" => "123456789111"]
+          ["name" => "banana", "barcode" => "123456789123","image"=>'images/banana.jpg',"category"=>"frutes"],
+          ["name" => "potato", "barcode" => "123456789124","image"=>'images/potato.jpg',"category"=>"frutes"],
+          ["name" => "tomato", "barcode" => "123456789125","image"=>'images/tomato.jpg',"category"=>"frutes"],
+          ["name" => "apples", "barcode" => "123456789126","image"=>'images/apple.jpg',"category"=>"frutes"],
+          ["name" => "carrot", "barcode" => "123456789127","image"=>'images/carrot.jpg',"category"=>"frutes"],
+          ["name" => "orange", "barcode" => "123456789128","image"=>'images/orange.jpg',"category"=>"frutes"],
+
+          ["name" => "chicken", "barcode" => "123456789129","image"=>'images/chicken.png',"category"=>"meats"],
+          ["name" => "beef", "barcode" => "123456789110","image"=>'images/beef.jpg',"category"=>"meats"],
+          ["name" => "eggs", "barcode" => "123456789111","image"=>'images/eggs.png',"category"=>"meats"]
         ];
+
         DummyProduct::insert($data);
     }
 }

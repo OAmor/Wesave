@@ -11,7 +11,7 @@ class Product extends Model
     ];
 
     protected $fillable = [
-        'qte','weight','user_id','name','barcode'
+        'qte','weight','user_id','name','barcode','category','image'
     ];
 
     public function owner(){
