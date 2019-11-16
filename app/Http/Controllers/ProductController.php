@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -42,5 +43,20 @@ class ProductController extends Controller
             'status' => 200,
             'message' => 'The product has been deleted successfully',
         ];
+    }
+
+    public function getNeeded(){
+        try{
+            $products = Product::where('qte',0)->get();
+            return response()->json([
+                'success' => true,
+                'products' => $products
+            ], 200);
+        }catch (\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
