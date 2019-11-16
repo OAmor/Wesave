@@ -7,6 +7,7 @@ use Auth;
 use Carbon\Carbon;
 use App\User;
 use App\Notifications\SignupActivate;
+use Validator;
 
 class AuthController extends Controller
 {
@@ -27,10 +28,19 @@ class AuthController extends Controller
      */
     public function signup(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'validation_errors' => $validator->errors()
+            ], 401);
+        }
+
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
@@ -38,7 +48,7 @@ class AuthController extends Controller
             'activation_token' => $this::quickRandom(20)
         ]);
         $user->save();
-        $user->notify(new SignupActivate($user));
+        //$user->notify(new SignupActivate($user));
         return response()->json([
             'success' => true,
             'message' => 'Successfully created user!'
