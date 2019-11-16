@@ -7,6 +7,9 @@ use Validator;
 use Auth;
 use App\Product;
 use Carbon\Carbon;
+use Log;
+use GuzzleHttp\Client;
+
 
 class ScannerController extends Controller
 {
@@ -96,5 +99,46 @@ class ScannerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getRecipes(Request $request){
+        $user = Auth::user();
+        $products = $user->products;
+        $arr=[];
+        foreach ($products as $p){
+            array_push($arr,$p->name);
+        }
+        $combs = $this->get_array_combination($arr);
+        $client = new Client();
+
+        $res = [];
+
+        foreach ($combs as $comb ){
+            $search = implode(",", $comb);
+            $req = "https://api.edamam.com/search?
+                    q=$search
+                    &app_id=b32d3c32
+                    &app_key=8332f2c81bbe470211eb2d6886e90cb3
+                    &from=0
+                    &to=3
+                    &calories=591-722
+                    &health=alcohol-free";
+            $response = $client->post($req);
+            $r = $response->getBody();
+            array_push($res,$r);
+        }
+        return $res;
+    }
+
+    public function test(){
+        return "dd";
+    }
+    function get_array_combination($arr) {
+        $results = array(array( ));
+
+        foreach ($arr as $values)
+            foreach ($results as $combination)
+                array_push($results, array_merge($combination, array($values))); // Get new values and merge to your previous combination. And push it to your results array
+        return $results;
     }
 }

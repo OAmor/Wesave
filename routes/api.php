@@ -29,4 +29,12 @@ Route::group(['prefix' => 'v1'], function () {
         //Scanner Actions
         Route::post('add', 'ScannerController@store');
     });
+
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('recipes', 'ScannerController@getRecipes');
+    });
+    Route::get('test', 'ScannerController@test');
 });
+
+
+
