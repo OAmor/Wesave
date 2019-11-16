@@ -63,4 +63,19 @@ class ProductController extends Controller
     public function validateRecipe(){
 
     }
+
+    public function getProductsByCat($cat){
+        try{
+            $products = Product::where('category',$cat)->get();
+            return response()->json([
+                'success' => true,
+                'products' => $products
+            ], 200);
+        }catch (\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
