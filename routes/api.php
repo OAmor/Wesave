@@ -24,4 +24,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('user', 'AuthController@user');
         });
     });
+
+    Route::group(['prefix' => 'qr','middleware' => 'auth:api'], function() {
+        //Scanner Actions
+        Route::post('add', 'ScannerController@store');
+    });
 });
