@@ -36,7 +36,6 @@ class ScannerController extends Controller
             $validator = Validator::make($request->all(),[
                 'qrcode' => 'required'
             ]);
-
             if($validator->fails()){
                 return response()->json([
                     'success' => false,
@@ -56,6 +55,8 @@ class ScannerController extends Controller
                     'name' => $p->name,
                     'qte' => substr($code,12,strlen($code)),
                     'created_at' => Carbon::now(),
+                    'category' => $p->category,
+                    'image' => $p->image,
                     'user_id' => Auth::user()->id
                 ]);
             }

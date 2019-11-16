@@ -66,10 +66,14 @@ class ProductController extends Controller
 
     public function getProductsByCat($cat){
         try{
-            $products = Product::where('category',$cat)->get();
+            $products = Auth::user()->products;
+            $res = [];
+            foreach ($products as $p){
+                if( $p->category == $cat )array_push($res,$p);
+            }
             return response()->json([
                 'success' => true,
-                'products' => $products
+                'products' => $res
             ], 200);
         }catch (\Exception $e){
             return response()->json([

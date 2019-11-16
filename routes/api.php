@@ -40,6 +40,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('all', 'ProductController@all');
         Route::post('{id}/delete', 'ProductController@delete');
         Route::get('missed', 'ProductController@getNeeded');
+        Route::get('category/{cat}', 'ProductController@getProductsByCat');
     });
 });
 
