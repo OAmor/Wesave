@@ -27,13 +27,19 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['prefix' => 'qr','middleware' => 'auth:api'], function() {
         //Scanner Actions
-        Route::post('add', 'ScannerController@store');
+        Route::post('store', 'ScannerController@store');
     });
 
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('recipes', 'ScannerController@getRecipes');
     });
     Route::get('test', 'ScannerController@test');
+
+    Route::group(['prefix' => 'products', 'middleware' => 'auth:api'], function(){
+        Route::post('{id}/update', 'ProductController@update');
+        Route::get('all', 'productController@all');
+        Route::post('{id}/delete', 'ProductController@delete');
+    });
 });
 
 

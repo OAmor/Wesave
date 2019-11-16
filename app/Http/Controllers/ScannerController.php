@@ -116,7 +116,7 @@ class ScannerController extends Controller
         $combs = $this->get_array_combination($arr);
         $client = new Client();
         $res = [];
-        
+
         foreach ($combs as $comb ){
             $search = implode(",", $comb);
             $req = "https://api.edamam.com/search?q=$search&app_id=b32d3c32&app_key=8332f2c81bbe470211eb2d6886e90cb3&from=0&to=3&calories=591-722&health=alcohol-free";
