@@ -39,7 +39,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('{id}/update', 'ProductController@update');
         Route::get('all', 'ProductController@all');
         Route::post('{id}/delete', 'ProductController@delete');
-        Route::get('missed', 'ProductController@getNeeded');
+        Route::get('missed', 'ProductController@getMissedProducts');
         Route::get('category/{cat}', 'ProductController@getProductsByCat');
     });
 });

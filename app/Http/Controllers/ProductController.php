@@ -28,7 +28,10 @@ class ProductController extends Controller
     }
     public function all(){
         $products = Auth::user()->products;
-        return $products;
+        return response()->json([
+            'success' => true,
+            'products' => $products
+        ], 200);
     }
     public function delete(Request $request, $product_id){
         $product = auth()->user()->products()->where('id', $product_id)->first();
@@ -60,7 +63,18 @@ class ProductController extends Controller
         }
     }
 
-    public function validateRecipe(){
+    public function getMissedProducts(){
+        $cats = Product::select('category')->distinct()->get();
+        $res = [];
+
+        foreach ($cats as $cat){
+            array_push($res,[
+                'id' => $cat['category'],
+                'products' => $this->getProductsCat($cat['category'])
+            ]);
+        }
+
+        return ['result' => $res];
 
     }
 
@@ -81,5 +95,17 @@ class ProductController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    private function getProductsCat($cat){
+        $products = Auth::user()->products;
+        $res = [];
+        foreach ($products as $p){
+            if( $p->category == $cat ){
+                $p['weight'] = rand(1,500);
+                array_push($res,$p);
+            }
+        }
+        return $res;
     }
 }

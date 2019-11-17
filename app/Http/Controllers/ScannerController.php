@@ -120,7 +120,7 @@ class ScannerController extends Controller
 
         foreach ($combs as $comb ){
             $search = implode(",", $comb);
-            $req = "https://api.edamam.com/search?q=$search&app_id=b32d3c32&app_key=8332f2c81bbe470211eb2d6886e90cb3&from=0&to=3&calories=591-722&health=alcohol-free";
+            $req = "https://api.edamam.com/search?q=$search&app_id=485a726e&app_key=1529a783fc99d8e0397d7bddc5d43ccd&from=0&to=3&calories=591-722&health=alcohol-free";
             $response = $client->post($req);
             array_push($res,json_decode($response->getBody()->getContents(),true));
         }
