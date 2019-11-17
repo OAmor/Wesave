@@ -60,8 +60,28 @@ class ProductController extends Controller
         }
     }
 
-    public function validateRecipe(){
-
+    public function validateRecipe(Request $request){
+        $request->validate([
+            'uri' => 'required',
+        ]);
+        $recipe_uri = $request->uri;
+        $req = "https://api.edamam.com/search?r=$recipe_uri&app_id=b32d3c32&app_key=8332f2c81bbe470211eb2d6886e90cb3";
+        $response = json_decode($client->post($req)->getBody()->getContent(), true);
+        $products = auth()->user()->products;
+        $products = $products->filter(function($item){
+            $ingredients = collect($response['ingredients']);
+            $ingredients = $ingredients->pluck('text');
+            return array_in($product->name, $ingredients);
+        });
+        $products->each(function($item){
+            //The text returned by the api is in the format of : "3 teaspoons of tomato puree' for example... we can't get the qte need for the recipe this easily, i removed only 1 from qte
+            $item->qte -= 1;
+            $item->save();
+        });
+        return [
+            'status' => 200,
+            'message' => 'The ingredient has been validated successfully !',
+        ];
     }
 
     public function getProductsByCat($cat){

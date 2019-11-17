@@ -33,6 +33,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('recipes', 'ScannerController@getRecipes');
     });
+    
     Route::get('test', 'ScannerController@test');
 
     Route::group(['prefix' => 'products', 'middleware' => 'auth:api'], function(){
